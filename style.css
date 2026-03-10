@@ -1,0 +1,147 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1a1714;
+      --parchment:#f5f0e8;
+      --gold:     #c9a84c;
+      --gold-dim: #7a6030;
+      --error:    #8b2e2e;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: var(--parchment);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      gap: 1.5rem;
+    }
+
+    header { text-align: center; }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: var(--gold-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    button {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.7rem 2.2rem;
+      background: var(--ink);
+      color: var(--parchment);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    button:hover:not(:disabled) { background: var(--gold); color: var(--ink); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Spinner ── */
+    .spinner-wrap {
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+    .spinner-wrap.active { display: flex; }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid #ccc;
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status { font-size: 0.82rem; min-height: 1.2rem; color: var(--error); letter-spacing: 1px; }
+    
+    /* ── Card ── */
+    .card-wrap {
+      width: 100%;
+      max-width: 680px;
+      position: relative;      /* required — makes it the anchor for position:absolute children */
+      display: none;
+    }
+
+    .card-wrap img#photo {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.5); /* darken so white text is readable */
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .card-wrap img#photo.loaded { opacity: 1; }
+
+    /* Overlay sits on top of the image using absolute positioning */
+    .overlay {
+      position: absolute;      /* positioned relative to .card-wrap */
+      inset: 0;                /* shorthand: top:0 right:0 bottom:0 left:0 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      pointer-events: none;    /* clicks pass through to the image underneath */
+    }
+
+    .quote-mark {
+      font-size: 5rem;
+      line-height: 0.5;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.3s;
+    }
+
+    .quote-text {
+      font-size: 1.35rem;
+      font-style: italic;
+      color: #fff;
+      line-height: 1.65;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+      opacity: 0;
+      transition: opacity 0.5s ease 0.45s;
+    }
+
+    .quote-author {
+      margin-top: 1rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+      opacity: 0;
+      transition: opacity 0.5s ease 0.6s;
+    }
+
+    /* Adding .ready to .card-wrap triggers all three CSS transitions */
+    .card-wrap.ready .quote-mark,
+    .card-wrap.ready .quote-text,
+    .card-wrap.ready .quote-author { opacity: 1; }
